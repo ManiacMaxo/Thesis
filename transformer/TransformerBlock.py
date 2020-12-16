@@ -7,10 +7,10 @@ class TransformerBlock(layers.Layer):
     def __init__(self, embed_dim, num_heads, ff_dim, rate=0.1):
         super(TransformerBlock, self).__init__()
         self.att = MultiHeadSelfAttention(embed_dim, num_heads)
-        self.ffn = keras.Sequential(
-            [layers.Dense(ff_dim, activation="relu"),
-             layers.Dense(embed_dim), ]
-        )
+        self.ffn = keras.Sequential([
+            layers.Dense(ff_dim, activation="relu"),
+            layers.Dense(embed_dim),
+        ])
         self.layernorm1 = layers.LayerNormalization(epsilon=1e-6)
         self.layernorm2 = layers.LayerNormalization(epsilon=1e-6)
         self.dropout1 = layers.Dropout(rate)
