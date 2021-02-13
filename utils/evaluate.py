@@ -5,7 +5,7 @@ from typing import Union
 
 
 def AUC(model, X: np.ndarray, y: np.ndarray, tolerance=3, output=dict):
-    """AUC
+    '''AUC
 
     Args:
         model: tensorflow model
@@ -16,7 +16,7 @@ def AUC(model, X: np.ndarray, y: np.ndarray, tolerance=3, output=dict):
 
     Returns:
         ndarray: true, false positives and true, false negatives
-    """
+    '''
     assert len(X) == len(y)
     if (len(X.shape) < 3):
         X = np.expand_dims(X, 0)
