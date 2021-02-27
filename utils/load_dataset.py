@@ -25,7 +25,6 @@ def load_dataset(
     if not exists(f'{fname}.tar.gz'):
         res = get(f'https://storage.gorchilov.net/datasets/{file}.tar.gz',
                   allow_redirects=True)
-        print(res.status_code)
         open(f'{fname}.tar.gz', 'wb').write(res.content)
 
     # extract tar gzip
