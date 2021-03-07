@@ -49,22 +49,24 @@ validation_freq = 5
 
 start_time = time()
 for fname in listdir('model_saves/eval_models'):
-
-    lstm = load_model(f'model_saves/eval_models/{fname}')
-    lstm.summary()
-
     for n in [0, 1, 2, 3, 5, 8]:
-        print(f'-------------- Starting model {i} on noise {n} --------------')
+        print(
+            f'------------- Starting {fname.replace(".h5", "")} on noise {n} --------------'
+        )
+        lstm = load_model(f'model_saves/eval_models/{fname}', compile=False)
         X_train, y_train, X_test, y_test = load_dataset(f'm{n}')
 
-        lstm.set_weights(weights[i])  # reset weights
-        model = train((X_train, y_train, X_test, y_test), lstm, epochs, 0,
-                      validation_freq, [scheduler, es])
+        model = train(dataset=(X_train, y_train, X_test, y_test),
+                      model=lstm,
+                      epochs=epochs,
+                      verbose=0,
+                      validation_freq=validation_freq,
+                      optimizer=optimizer,
+                      callbacks=[scheduler, es])
 
         for boundary in [300, 500, 1000, 2500, 5000]:
             # plot_roc(y_test, model.predict(X_test), boundary)
             print(auc(y_test, model.predict(X_test), boundary))
 
-        model.save(f'model_saves/evals/{fname.replace('.h5', '')}-{n}.h5')
+        model.save(f'model_saves/evals/{fname.replace(".h5", "")}-{n}.h5')
         print(f'Elapsed time: {time() - start_time}')
-

@@ -1,23 +1,29 @@
-from numpy import ndarray
 from typing import Tuple
+
+from numpy import ndarray
 from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Optimizer
 
 
-def train(dataset: Tuple[ndarray, ndarray, ndarray, ndarray],
-          model: Model,
-          epochs: int,
-          verbose=0,
-          validation_freq=1,
-          callbacks=[]) -> Model:
+def train(
+    dataset: Tuple[ndarray, ndarray, ndarray, ndarray],
+    model: Model,
+    epochs: int,
+    optimizer: Optimizer,
+    validation_freq=1,
+    callbacks=[],
+    verbose=0,
+) -> Model:
     '''Train model
 
     Args:
         dataset (Tuple[ndarray, ndarray, ndarray, ndarray]): dataset to train on
         model (Model): keras model
         epochs (int): number of epochs to train
-        verbose (int, optional): verbosity level for fit. Defaults to 0.
+        optimizer (Optimizer): keras optimizer
         validation_freq (int, optional): frequency of validation. Defaults to 1.
         callbacks (list, optional): callbacks for training. Defaults to [].
+        verbose (int, optional): verbosity level for fit. Defaults to 0.
 
     Returns:
         Model: trained model
