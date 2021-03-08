@@ -1,3 +1,4 @@
+from time import time
 from typing import Tuple
 
 import matplotlib.pyplot as plt
@@ -29,6 +30,8 @@ def train(
     Returns:
         Model: trained model
     '''
+    start_time = time()
+
     X_train, y_train, X_test, y_test = dataset
 
     model.compile(optimizer=optimizer, loss='mse')
@@ -49,4 +52,5 @@ def train(
     plt.legend()
     plt.show()
 
+    print(f'Training time: {time() - start_time}')
     return model
