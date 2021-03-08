@@ -1,5 +1,6 @@
 from typing import Tuple
 
+import matplotlib.pyplot as plt
 from numpy import ndarray
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Optimizer
