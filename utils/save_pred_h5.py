@@ -2,8 +2,7 @@ from typing import Union
 
 import h5py
 import numpy as np
-from tensorflow.keras.model import Model
-from tensorflow.keras.models import load_model
+from tensorflow.keras.models import load_model, Model
 
 from utils import load_dataset
 
