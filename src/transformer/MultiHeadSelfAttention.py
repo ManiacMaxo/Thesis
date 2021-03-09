@@ -9,7 +9,7 @@ class MultiHeadSelfAttention(layers.Layer):
         self.num_heads = num_heads
         if embed_dim % num_heads != 0:
             raise ValueError(
-                f"embedding dimension = {embed_dim} should be divisible by number of heads = {num_heads}"
+                f'embedding dimension = {embed_dim} should be divisible by number of heads = {num_heads}'
             )
         self.projection_dim = embed_dim // num_heads
         self.query_dense = layers.Dense(embed_dim)

@@ -14,7 +14,7 @@ def train(
     optimizer: Optimizer,
     validation_freq=1,
     callbacks=[],
-    verbose=0,
+    verbose=1,
 ) -> Model:
     '''Train model
 

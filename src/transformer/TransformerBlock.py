@@ -8,7 +8,7 @@ class TransformerBlock(layers.Layer):
         super(TransformerBlock, self).__init__()
         self.att = MultiHeadSelfAttention(embed_dim, num_heads)
         self.ffn = keras.Sequential([
-            layers.Dense(ff_dim, activation="relu"),
+            layers.Dense(ff_dim, activation='relu'),
             layers.Dense(embed_dim),
         ])
         self.layernorm1 = layers.LayerNormalization(epsilon=1e-6)
