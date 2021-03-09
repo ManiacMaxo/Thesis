@@ -1,0 +1,8 @@
+name: genetics
+dependencies:
+  - numpy
+  - tensorflow-gpu
+  - notebook
+  - scikit-learn
+  - h5py
+  - matplotlib
