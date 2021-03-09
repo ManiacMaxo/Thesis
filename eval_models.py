@@ -1,3 +1,4 @@
+import argparse
 from os import listdir
 from sys import argv
 from time import time
@@ -10,7 +11,19 @@ from tensorflow.keras.callbacks import EarlyStopping, LearningRateScheduler
 from tensorflow.keras.models import load_model
 from tensorflow.keras.optimizers import Adam
 
-from utils import load_dataset, train
+from utils import auc, load_dataset, plot_roc, train
+
+parser = argparse.ArgumentParser(description='LSTM training')
+parser.add_argument('--model', type=int, defalt=0,
+                    help='model to load from model_saves/eval_models')
+parser.add_argument('--epochs', type=int, default=500,
+                    help='number of epochs to train for (default: 500)')
+parser.add_argument('--lr', type=float, default=1e-3,
+                    help='learnig rate (default: 1e-3)')
+parser.add_argument('--dataset', type=int, default=100,
+                    help='dataset to train (default: all)')
+parser.add_argument('--pth_dir', type=str, default='model_saves/evals',
+                    help='where to save model checkpoints (default: model_saves/evals)')
 
 
 def schedule(epoch, lr) -> float:
@@ -20,40 +33,24 @@ def schedule(epoch, lr) -> float:
     return lr
 
 
-def plot_roc(y_true, y_score, boundary):
-    y = np.where(y > boundary, 0, 1)
-    pred = np.where(pred > boundary, 0, 1)
+if __name__ == '__main__':
+    args = parser.parse_args()
 
-    fpr, tpr, thresholds = roc_curve(y, pred)
+    scheduler = LearningRateScheduler(schedule)
+    es = EarlyStopping(monitor='loss', patience=15, verbose=1)
 
-    plt.title(f'ROC curve with boundary {boundary}')
-    plt.ylabel('True Positive Rate')
-    plt.xlabel('False Positive Rate')
-    plt.plot(tpr, fpr)
-    plt.show()
-    print(f'Thresholds: {thresholds}')
+    optimizer = Adam(lr=args.lr)
+    epochs = args.epochs
+    validation_freq = 5
+    datasets = [args.dataset] if args.dataset !== 100 else [0, 1, 2, 3, 5, 8]
 
+    start_time = time()
 
-def auc(y_true, y_score, boundary):
-    y = np.where(y_true > boundary, 0, 1)
-    pred = np.where(y_score > boundary, 0, 1)
-
-    return roc_auc_score(y, pred)
-
-
-scheduler = LearningRateScheduler(schedule)
-es = EarlyStopping(monitor='loss', patience=10, verbose=1)
-optimizer = Adam(lr=1e-3)
-epochs = 1500
-validation_freq = 5
-
-start_time = time()
-for fname in listdir('model_saves/eval_models'):
-    for n in [0, 1, 2, 3, 5, 8]:
+    for n in datasets:
         print(
-            f'------------- Starting {fname.replace(".h5", "")} on noise {n} --------------'
+            f'------------- Starting model {args.model} on noise {n} --------------'
         )
-        lstm = load_model(f'model_saves/eval_models/{fname}', compile=False)
+        lstm = load_model(f'model_saves/eval_models/model_{args.model}.h5', compile=False)
         X_train, y_train, X_test, y_test = load_dataset(f'm{n}')
 
         model = train(dataset=(X_train, y_train, X_test, y_test),
@@ -68,5 +65,6 @@ for fname in listdir('model_saves/eval_models'):
             # plot_roc(y_test, model.predict(X_test), boundary)
             print(auc(y_test, model.predict(X_test), boundary))
 
-        model.save(f'model_saves/evals/{fname.replace(".h5", "")}-{n}.h5')
-        print(f'Elapsed time: {time() - start_time}')
+        model.save(f'{args.pth_dir}/model_{args.model}-{n}.h5')
+
+    print(f'Total time: {(time() - start_time)/60:.2f} minutes')
