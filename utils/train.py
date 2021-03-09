@@ -52,5 +52,5 @@ def train(
     plt.legend()
     plt.show()
 
-    print(f'Training time: {time() - start_time}')
+    print(f'Training time: {(time() - start_time)/60:.2f} minutes')
     return model
