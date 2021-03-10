@@ -7,34 +7,49 @@ from numpy import ndarray
 from requests import get
 
 
-def load_dataset(
-        file: str,
-        directory: str = '/tmp') -> Tuple[ndarray, ndarray, ndarray, ndarray]:
+def load_dataset(file: str,
+                 directory: str = '/tmp',
+                 download: bool = True,
+                 url: str = None) -> Tuple[ndarray, ndarray, ndarray, ndarray]:
     '''Load Dataset from storage or cloud h5 format
 
     Args:
-        file (str): dataset name
+        file (str): file name (tar gzipped, file extension not necessary)
         directory (str, optional): Location to save the dataset. Defaults to '/tmp'.
+        download (bool, optional): Whether to download from repo. 
+        If false, 'file' should be the path to the tar file. Defaults to 'True'.
+        url (str, optional): URL of cloud storage pointing to file. Defaults to None.
 
     Returns:
         Tuple[ndarray, ndarray, ndarray, ndarray]: X, y train, X, y test
     '''
-    fname = join(directory, file)
+    if not file.endswith('.tar.gz'):
+        file += '.tar.gz'
+    filename = join(directory, file)
+    url = url if url else f'https://storage.gorchilov.net/datasets/{file}'
 
     # get from cloud
-    if not exists(f'{fname}.tar.gz'):
-        res = get(f'https://storage.gorchilov.net/datasets/{file}.tar.gz',
-                  allow_redirects=True)
-        open(f'{fname}.tar.gz', 'wb').write(res.content)
+    if not exists(filename) and download:
+        res = get(url, allow_redirects=True)
+        open(filename, 'wb').write(res.content)
 
-    # extract tar gzip
-    if not exists(f'{fname}_train.h5') or not exists(f'{fname}_test.h5'):
-        tar = tarfile.open(f'{fname}.tar.gz', 'r:gz')
+    # open tarball
+    tar = tarfile.open(filename, 'r:gz')
+
+    # get filenames from tarball
+    files = tar.getmembers()
+    train_filename = join(directory,
+                          [i.name for i in files if 'train' in i.name][0])
+    test_filename = join(directory,
+                         [i.name for i in files if 'test' in i.name][0])
+
+    # extract files if not already
+    if not exists(train_filename) or not exists(test_filename):
         tar.extractall(path=directory)
         tar.close()
 
-    train_file = File(f'{fname}_train.h5', mode='r')
-    test_file = File(f'{fname}_test.h5', mode='r')
+    train_file = File(train_filename, mode='r')
+    test_file = File(test_filename, mode='r')
 
     X_train = train_file['data'][:]
     y_train = train_file['labels'][:]

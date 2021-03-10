@@ -3,70 +3,10 @@ from typing import Union
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import roc_auc_score, roc_curve
-from tensorflow.keras import Model
-
-# def AUC(model, X: np.ndarray, y: np.ndarray, tolerance=3, output=dict):
-#     '''AUC
-
-#     Args:
-#         model: tensorflow model
-#         X (ndarray): samples
-#         y (ndarray): labels
-#         tolerance (int, optional): tolerance for ROC. Defaults to 3.
-#         output ([type], optional): return type. Defaults to dict.
-
-#     Returns:
-#         ndarray: true, false positives and true, false negatives
-#     '''
-#     assert len(X) == len(y)
-#     if (len(X.shape) < 3):
-#         X = np.expand_dims(X, 0)
-#     correct = []
-#     predictions = model.predict(X)
-
-#     for i in range(len(X)):
-#         pred = (predictions[i] < tolerance).all()
-#         real = (y[i] < tolerance).all()
-#         same = (pred == real)
-#         if same and pred == True:
-#             correct.append('true positive')
-#         elif same and pred == False:
-#             correct.append('true negative')
-#         elif not same and pred == True:
-#             correct.append('false positive')
-#         elif not same and pred == False:
-#             correct.append('false negative')
-
-#     if (output == dict):
-#         freq = [correct.count(entry) for entry in correct]
-#         return dict(list(zip(correct, freq)))
-#     return correct
-
-# def ROC(model, X: np.ndarray, y: np.ndarray, tolerances: [], plot=True):
-#     histogram_x = []
-#     histogram_y = []
-
-#     for tol in tolerances:
-#         output = AUC(model, X, y, tolerance=tol)
-
-#         # all positive labels
-#         positives = output['true positive'] + output['false positive']
-#         # TPR = Σ True positive / Σ Condition positive
-#         true_positive_rate = output['true positive'] / positives
-#         # FPR = Σ False positive / Σ Condition positive
-#         false_positive_rate = output['false positive'] / positives
-
-#         histogram_x.append(false_positive_rate)
-#         histogram_y.append(true_positive_rate)
-
-#     if plot:
-#         plot_ROC(histogram_x, histogram_y)
-#     else:
-#         return histogram_x, histogram_y
 
 
 def plot_roc(y_true: np.ndarray, y_score: np.ndarray, boundaries: list):
-    plt.title(f'ROC curve')
+    plt.title('ROC curve')
     plt.ylabel('True Positive Rate')
     plt.xlabel('False Positive Rate')
 
