@@ -6,16 +6,16 @@ from sklearn.metrics import roc_auc_score, roc_curve
 
 
 def plot_roc(y_true: np.ndarray, y_score: np.ndarray, boundaries: list):
-    plt.title('ROC curve')
-    plt.ylabel('True Positive Rate')
-    plt.xlabel('False Positive Rate')
+    plt.title("ROC curve")
+    plt.ylabel("True Positive Rate")
+    plt.xlabel("False Positive Rate")
 
     for boundary in boundaries:
         y = np.where(y_true > boundary, 0, 1)
         pred = np.where(y_score > boundary, 0, 1)
 
         fpr, tpr, thresholds = roc_curve(y, pred)
-        plt.plot(fpr, tpr, label=f'bnd {boundary}')
+        plt.plot(fpr, tpr, label=f"bnd {boundary}")
     plt.legend()
     plt.show()
 

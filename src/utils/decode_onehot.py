@@ -5,7 +5,7 @@ import numpy as np
 from utils import load_dataset
 
 
-def decode(X: Tuple[ndarray, ndarray]) -> Tuple[np.ndarray, np.ndarray]:
+def decode(X: Tuple[np.ndarray, np.ndarray]) -> Tuple[np.ndarray, np.ndarray]:
     X_train, X_test = X
 
     get_pos = lambda x: np.argmax(x, axis=0)
