@@ -34,8 +34,6 @@ def train(
 
     X_train, y_train, X_test, y_test = dataset
 
-    model.compile(optimizer=optimizer, loss="mse")
-
     history = model.fit(
         X_train,
         y_train,
