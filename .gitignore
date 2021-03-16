@@ -128,5 +128,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# models
-*-model/
+# prototype models
+model_saves/evals/

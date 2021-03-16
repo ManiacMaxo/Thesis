@@ -11,21 +11,20 @@ def train(
     dataset: Tuple[ndarray, ndarray, ndarray, ndarray],
     model: Model,
     epochs: int,
-    optimizer: Optimizer,
     validation_freq=1,
     callbacks=[],
     verbose=0,
+    batch_size=None,
 ) -> Model:
     """Train model
 
     Args:
         dataset (Tuple[ndarray, ndarray, ndarray, ndarray]): dataset to train on
-        model (Model): keras model
+        model (Model): compiled keras model
         epochs (int): number of epochs to train
-        optimizer (Optimizer): keras optimizer
         validation_freq (int, optional): frequency of validation. Defaults to 1.
         callbacks (list, optional): callbacks for training. Defaults to [].
-        verbose (int, optional): verbosity level for fit. Defaults to 0.
+        verbose (int, optional): verbosity level for fit. Defaults to None.
 
     Returns:
         Model: trained model
@@ -42,6 +41,7 @@ def train(
         validation_data=(X_test, y_test),
         validation_freq=validation_freq,
         verbose=verbose,
+        batch_size=batch_size,
     )
 
     passed_epochs = len(history.history["loss"])
