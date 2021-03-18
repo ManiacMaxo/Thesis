@@ -44,6 +44,8 @@ def train(
         batch_size=batch_size,
     )
 
+    plt.ylabel("Loss")
+    plt.xlabel("Epochs")
     passed_epochs = len(history.history["loss"])
     plt.plot(range(passed_epochs), history.history["loss"], label="loss")
     plt.plot(
