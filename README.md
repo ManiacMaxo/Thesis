@@ -11,6 +11,7 @@ Using deep neural networks to locate transcription factors in genomes
     > $ conda env create -f environment.yml  
     > $ conda activate genetics
 -   run a jupyter notebook server (you could use the script `./server.sh start` for a headless run)
+-   you could always test it in [colab](https://colab.research.google.com/github/ManiacMaxo/Thesis/blob/main/Examples.ipynb)
 
 ## Authors
 
