@@ -67,7 +67,7 @@ def load_dataset(
     files = list(filter(lambda x: x.name[0] != ".", tar.getmembers()))
 
     train_filename = join(
-        out_dir, next(filter(lambda x: "train" in x.name, files)).name
+        out_dir, next(filter(lambda x: "train" in x.name, files)).name,
     )
     test_filename = join(out_dir, next(filter(lambda x: "test" in x.name, files)).name)
 
@@ -96,4 +96,3 @@ def load_dataset(
 if __name__ == "__main__":
     X_train, y_train, X_test, y_test = load_dataset("FOX_3000")
     print(X_train.shape, y_train.shape, X_test.shape, y_test.shape)
-    print(X_train)
