@@ -131,3 +131,6 @@ dmypy.json
 # prototype models
 model_saves/evals/
 model_saves/final/*.h5
+
+# logs
+src/logs
