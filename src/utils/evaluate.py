@@ -1,9 +1,8 @@
-import warnings
 from itertools import cycle
 
 import matplotlib.pyplot as plt
 import numpy as np
-from sklearn.metrics import auc, roc_auc_score, roc_curve
+from sklearn.metrics import auc, roc_curve
 
 colors = cycle(
     [
@@ -123,6 +122,6 @@ def plot_roc(
             label=f"{lbl} (area = {roc_auc[i]:.2f})",
         )
 
-    plt.legend(loc="upper right", bbox_to_anchor=(2.07, 1.1), ncol=2)
+    plt.legend(loc="upper left", bbox_to_anchor=(1.02, 1.03), ncol=max(n_classes/15, 1))
     plt.show()
 
